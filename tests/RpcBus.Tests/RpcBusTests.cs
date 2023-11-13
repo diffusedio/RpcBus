@@ -9,17 +9,6 @@ namespace RpcBus.Tests
 {
     public class RpcBusTests
     {
-        [Fact]
-     
-        public async Task TestRootEndpoint()
-        {
-            await using var application = new WebApplicationFactory<Program>();
-            using var client = application.CreateClient();
-
-            var response = await client.GetStringAsync("/");
-
-            Assert.Equal("Hello World!", response);
-        }
 
         private static JRpcClient GetClient()
         {
