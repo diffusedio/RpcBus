@@ -1,8 +1,8 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using RpcBus.Test.Api.Data;
 using RpcBus.Test.Contract;
 using RpcBus.Test.Contract.Models;
+using SlimMessageBus;
 
 namespace RpcBus.Test.Api.Handlers;
 
@@ -15,13 +15,13 @@ public class QueryTodosRequestHandler : IRequestHandler<QueryTodosRequest, TodoM
         this.context = context;
     }
 
-    public async Task<TodoModel[]> Handle(QueryTodosRequest request, CancellationToken cancellationToken)
+    public async Task<TodoModel[]> OnHandle(QueryTodosRequest request)
     {
         return await context
             .Todos
             .AsNoTracking()
             .Skip(request.Skip)
             .Take(request.Take)
-            .ToArrayAsync(cancellationToken);
+            .ToArrayAsync();
     }
 }

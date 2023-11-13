@@ -1,11 +1,11 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using MediatR;
 using Microsoft.IdentityModel.Tokens;
 using RpcBus.Exceptions;
 using RpcBus.Test.Api.Models;
 using RpcBus.Test.Contract;
+using SlimMessageBus;
 
 namespace RpcBus.Test.Api.Handlers;
 
@@ -21,7 +21,7 @@ public class LoginRequestHandler : IRequestHandler<LoginRequest, string>
 
     public static SymmetricSecurityKey GetTokenSigningKey() => new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super secret sentence"));
 
-    public Task<string> Handle(LoginRequest request, CancellationToken cancellationToken)
+    public Task<string> OnHandle(LoginRequest request)
     {
         var user = users.FirstOrDefault(x => x.Name == request.Username && x.Password == request.Password);
 

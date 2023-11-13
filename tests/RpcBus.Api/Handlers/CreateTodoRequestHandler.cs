@@ -1,7 +1,8 @@
-﻿using MediatR;
-using RpcBus.Test.Api.Data;
+﻿using RpcBus.Test.Api.Data;
 using RpcBus.Test.Contract;
 using RpcBus.Test.Contract.Models;
+using SlimMessageBus;
+using System.Threading;
 
 namespace RpcBus.Test.Api.Handlers;
 
@@ -14,8 +15,9 @@ public class CreateTodoRequestHandler : IRequestHandler<CreateTodoRequest, TodoM
         this.context = context;
     }
 
-    public async Task<TodoModel> Handle(CreateTodoRequest request, CancellationToken cancellationToken)
+    public async Task<TodoModel> OnHandle(CreateTodoRequest request)
     {
+
         var entity = new TodoModel
         {
             Name = request.Name,
@@ -24,7 +26,7 @@ public class CreateTodoRequestHandler : IRequestHandler<CreateTodoRequest, TodoM
 
         context.Todos.Add(entity);
 
-        await context.SaveChangesAsync(cancellationToken);
+        await context.SaveChangesAsync();
 
         return entity;
     }

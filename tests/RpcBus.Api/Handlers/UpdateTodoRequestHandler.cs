@@ -1,9 +1,9 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using RpcBus.Exceptions;
 using RpcBus.Test.Api.Data;
 using RpcBus.Test.Contract;
 using RpcBus.Test.Contract.Models;
+using SlimMessageBus;
 
 namespace RpcBus.Test.Api.Handlers;
 
@@ -16,14 +16,14 @@ public class UpdateTodoRequestHandler : IRequestHandler<UpdateTodoRequest, TodoM
         this.context = context;
     }
 
-    public async Task<TodoModel> Handle(UpdateTodoRequest request, CancellationToken cancellationToken)
+    public async Task<TodoModel> OnHandle(UpdateTodoRequest request)
     {
-        if (await context.Todos.AnyAsync(x => x.Id == request.Model.Id, cancellationToken) is false)
+        if (await context.Todos.AnyAsync(x => x.Id == request.Model.Id) is false)
             throw new JRpcNotFoundException("Todo not found");
 
         context.Todos.Update(request.Model);
 
-        await context.SaveChangesAsync(cancellationToken);
+        await context.SaveChangesAsync();
 
         return request.Model;
     }

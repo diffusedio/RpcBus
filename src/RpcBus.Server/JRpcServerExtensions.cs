@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using RpcBus.Server.Handlers;
+using SlimMessageBus.Host;
+using SlimMessageBus.Host.Memory;
 using static RpcBus.Utils.JRpcUtils;
 
 namespace RpcBus.Server
@@ -12,9 +14,6 @@ namespace RpcBus.Server
         {
             // add configurators
             if (setupAction != null) services.Configure(setupAction);
-
-            // add MediatR
-            services.AddMediatR(cfg=> cfg.RegisterServicesFromAssemblies(assemblies));
 
             services.AddTransient<JRpcAuthenticationHandler>();
             services.AddTransient<JRpcAuthorizationHandler>();

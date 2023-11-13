@@ -1,24 +1,24 @@
 ﻿using System.Net;
 using System.Text.Json;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using RpcBus.Exceptions;
 using RpcBus.Models;
+using SlimMessageBus;
 
 namespace RpcBus.Server.Handlers;
 
 public class JRpcRequestHandler
 {
     private readonly JRpcServerOptions options;
-    private readonly IMediator mediator;
+    private readonly IMessageBus bus ;
     private readonly JRpcAuthorizationHandler authorization;
     private readonly JRpcAuthenticationHandler authentication;
 
-    public JRpcRequestHandler(IOptionsSnapshot<JRpcServerOptions> options, IMediator mediator, JRpcAuthorizationHandler authorization, JRpcAuthenticationHandler authentication)
+    public JRpcRequestHandler(IOptionsSnapshot<JRpcServerOptions> options, IMessageBus bus, JRpcAuthorizationHandler authorization, JRpcAuthenticationHandler authentication)
     {
         this.options = options.Value;
-        this.mediator = mediator;
+        this.bus = bus;
         this.authorization = authorization;
         this.authentication = authentication;
     }
@@ -71,7 +71,7 @@ public class JRpcRequestHandler
             }
 
             // deserialize params to request
-            var request = rpcRequest.Params.Deserialize(requestType, options.JsonOptions);
+            var request =rpcRequest.Params.Deserialize(requestType, options.JsonOptions) ;
 
             if (request is null)
             {
@@ -79,7 +79,7 @@ public class JRpcRequestHandler
             }
 
             // send request
-            var response = await mediator.Send(request);
+            var response = await bus.Send((dynamic)request);
 
             // check if request is a Result Type
             if (response is IResult result)

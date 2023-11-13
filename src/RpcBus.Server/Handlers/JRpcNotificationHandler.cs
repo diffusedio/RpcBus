@@ -1,24 +1,24 @@
 ﻿using System.Net;
 using System.Text.Json;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using RpcBus.Exceptions;
 using RpcBus.Models;
+using SlimMessageBus;
 
 namespace RpcBus.Server.Handlers;
 
 public class JRpcNotificationHandler
 {
     private readonly JRpcServerOptions options;
-    private readonly IMediator mediator;
+    private readonly IMessageBus bus;
     private readonly JRpcAuthorizationHandler authorization;
     private readonly JRpcAuthenticationHandler authentication;
 
-    public JRpcNotificationHandler(IOptionsSnapshot<JRpcServerOptions> options, IMediator mediator, JRpcAuthorizationHandler authorization, JRpcAuthenticationHandler authentication)
+    public JRpcNotificationHandler(IOptionsSnapshot<JRpcServerOptions> options, IMessageBus bus, JRpcAuthorizationHandler authorization, JRpcAuthenticationHandler authentication)
     {
         this.options = options.Value;
-        this.mediator = mediator;
+        this.bus = bus;
         this.authorization = authorization;
         this.authentication = authentication;
     }
@@ -58,7 +58,7 @@ public class JRpcNotificationHandler
             }
 
             // publish notification
-            await mediator.Publish(notification);
+            await bus.Publish(notification);
             context.Response.StatusCode = (int)HttpStatusCode.NoContent;
         }
         // handle exceptions

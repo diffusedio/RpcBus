@@ -1,5 +1,5 @@
-﻿using MediatR;
-using RpcBus.Test.Contract.Models;
+﻿using RpcBus.Test.Contract.Models;
+using SlimMessageBus;
 
 namespace RpcBus.Test.Contract
 {

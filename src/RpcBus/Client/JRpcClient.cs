@@ -1,13 +1,8 @@
-﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
-using System.Threading.Tasks;
 using RpcBus.Models;
+using SlimMessageBus;
 using static RpcBus.Utils.JRpcUtils;
 
 namespace RpcBus.Client
@@ -113,7 +108,7 @@ namespace RpcBus.Client
             throw new NotImplementedException();
         }
 
-        public async Task<Dictionary<int, IResult>> Batch(Dictionary<int, IBaseRequest> batch)
+        public async Task<Dictionary<int, IResult>> Batch(Dictionary<int, object> batch)
         {
             var requests = batch
                 .Select((x) => new JRpcRequest(
@@ -177,5 +172,9 @@ namespace RpcBus.Client
                 })
                 .ToDictionary(x => x.Key, x => x.Value);
         }
+    }
+
+    public interface INotification
+    {
     }
 }

@@ -1,11 +1,12 @@
-﻿using MediatR;
-using RpcBus.Test.Contract;
+﻿using RpcBus.Test.Contract;
+using SlimMessageBus;
 
 namespace RpcBus.Test.Api.Handlers;
 
 public class ErrorRequestHandler : IRequestHandler<ErrorRequest, string>
 {
-    public Task<string> Handle(ErrorRequest request, CancellationToken cancellationToken)
+    
+    public Task<string> OnHandle(ErrorRequest request)
     {
         throw new Exception(request.Message);
     }
