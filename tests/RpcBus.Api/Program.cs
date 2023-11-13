@@ -1,14 +1,15 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using RpcBus.Server;
 using RpcBus.Test.Api.Data;
 using RpcBus.Test.Api.Handlers;
 using RpcBus.Test.Contract;
+using SlimMessageBus.Host;
+using SlimMessageBus.Host.Memory;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 
 // add authentication
@@ -24,7 +25,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
             ValidIssuer = "me",
             ValidAudience = "me",
-            IssuerSigningKey = LoginRequestHandler.GetTokenSigningKey(),
+            IssuerSigningKey = LoginRequestHandler.GetTokenSigningKey()
         };
     });
 
@@ -34,9 +35,25 @@ builder.Services.AddAuthorization();
 // add db context
 builder.Services.AddDbContext<TodoContext>(options => options.UseInMemoryDatabase("local"));
 
+
+var assemblies = new[] { typeof(CreateTodoRequest).Assembly, typeof(CreateTodoRequestHandler).Assembly };
+
+// add SlimMessageBus
+builder.Services.AddSlimMessageBus(mbb =>
+{
+    mbb
+        .WithProviderMemory()
+        .AutoDeclareFrom(assemblies);
+
+    foreach (var ass in assemblies)
+    {
+        mbb.AddServicesFromAssembly(ass);
+    }
+});
+
 // add jrpc mediator
 builder.Services
-    .AddJRpcMediator(new[] { typeof(CreateTodoRequest).Assembly, typeof(CreateTodoRequestHandler).Assembly }, options =>
+    .AddJRpcMediator(assemblies, options =>
     {
         options.Route = "/execute";
         options.JsonOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
@@ -44,27 +61,13 @@ builder.Services
 
 builder.Services.AddHttpContextAccessor();
 
-//builder.Services.AddSpaStaticFiles(cfg => cfg.RootPath = "wwwroot");
-
 var app = builder.Build();
 
 app.UseDeveloperExceptionPage();
 app.UseStaticFiles();
-//app.UseSpaStaticFiles();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.UseJRpcMediator();
-//app.UseJRpcDashboard();
-
-//app.UseSpa(spa =>
-//{
-//    spa.UseProxyToSpaDevelopmentServer("http://localhost:3000/");
-//});
-
-
-app.Run();
-
 
 app.Run();
