@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.13" />
+  </ItemGroup>
+
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="RpcBus.Tests" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\src\RpcBus.Server\RpcBus.Server.csproj" />
+	  <ProjectReference Include="..\..\src\RpcBus\RpcBus.csproj" />
+	  <ProjectReference Include="..\RpcBus.Test.Contract\RpcBus.Test.Contract.csproj" />
+	</ItemGroup>
+
+</Project>
