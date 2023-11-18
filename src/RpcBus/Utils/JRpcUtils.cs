@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using SlimMessageBus;
+using RpcBus.Client;
 
 namespace RpcBus.Utils
 {

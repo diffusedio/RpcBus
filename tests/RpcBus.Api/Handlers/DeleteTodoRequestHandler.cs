@@ -1,11 +1,11 @@
 ﻿using RpcBus.Exceptions;
 using RpcBus.Test.Api.Data;
 using RpcBus.Test.Contract;
-using SlimMessageBus;
+
 
 namespace RpcBus.Test.Api.Handlers;
 
-public class DeleteTodoRequestHandler : IRequestHandler<DeleteTodoRequest>
+public class DeleteTodoRequestHandler
 {
     private readonly TodoContext context;
 
@@ -14,7 +14,7 @@ public class DeleteTodoRequestHandler : IRequestHandler<DeleteTodoRequest>
         this.context = context;
     }
 
-    public async Task OnHandle(DeleteTodoRequest request)
+    public async Task Handle(DeleteTodoRequest request)
     {
         var entity = await context.Todos.FindAsync(new object?[] { request.Id });
 

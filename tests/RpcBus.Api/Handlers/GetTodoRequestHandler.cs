@@ -2,13 +2,13 @@
 using RpcBus.Test.Api.Data;
 using RpcBus.Test.Contract;
 using RpcBus.Test.Contract.Models;
-using SlimMessageBus;
+
 using System.Threading;
 
 namespace RpcBus.Test.Api.Handlers;
 
-public class GetTodoRequestHandler : IRequestHandler<GetTodoRequest, TodoModel>
-{
+public class GetTodoRequestHandler {
+
     private readonly TodoContext context;
 
     public GetTodoRequestHandler(TodoContext context)

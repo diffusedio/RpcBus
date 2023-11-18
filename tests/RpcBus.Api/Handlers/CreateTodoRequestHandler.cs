@@ -1,21 +1,21 @@
 ﻿using RpcBus.Test.Api.Data;
 using RpcBus.Test.Contract;
 using RpcBus.Test.Contract.Models;
-using SlimMessageBus;
+
 using System.Threading;
 
 namespace RpcBus.Test.Api.Handlers;
 
-public class CreateTodoRequestHandler : IRequestHandler<CreateTodoRequest, TodoModel>
+public class CreateTodoRequestHandler
 {
     private readonly TodoContext context;
 
-    public CreateTodoRequestHandler(TodoContext context)
+    public CreateTodoRequestHandler(TodoContext context) 
     {
         this.context = context;
     }
 
-    public async Task<TodoModel> OnHandle(CreateTodoRequest request)
+    public async Task<TodoModel> Handle(CreateTodoRequest request)
     {
 
         var entity = new TodoModel

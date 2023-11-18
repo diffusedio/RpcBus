@@ -6,8 +6,7 @@ using RpcBus.Server;
 using RpcBus.Test.Api.Data;
 using RpcBus.Test.Api.Handlers;
 using RpcBus.Test.Contract;
-using SlimMessageBus.Host;
-using SlimMessageBus.Host.Memory;
+using Wolverine;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,18 +37,21 @@ builder.Services.AddDbContext<TodoContext>(options => options.UseInMemoryDatabas
 
 var assemblies = new[] { typeof(CreateTodoRequest).Assembly, typeof(CreateTodoRequestHandler).Assembly };
 
-// add SlimMessageBus
-builder.Services.AddSlimMessageBus(mbb =>
-{
-    mbb
-        .WithProviderMemory()
-        .AutoDeclareFrom(assemblies);
 
-    foreach (var ass in assemblies)
-    {
-        mbb.AddServicesFromAssembly(ass);
-    }
-});
+builder.Host.UseWolverine();
+
+//// add SlimMessageBus
+//builder.Services.AddSlimMessageBus(mbb =>
+//{
+//    mbb
+//        .WithProviderMemory()
+//        .AutoDeclareFrom(assemblies);
+
+//    foreach (var ass in assemblies)
+//    {
+//        mbb.AddServicesFromAssembly(ass);
+//    }
+//});
 
 // add jrpc mediator
 builder.Services

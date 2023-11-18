@@ -2,7 +2,6 @@
 using System.Net.Http.Json;
 using System.Text.Json;
 using RpcBus.Models;
-using SlimMessageBus;
 using static RpcBus.Utils.JRpcUtils;
 
 namespace RpcBus.Client
@@ -172,9 +171,5 @@ namespace RpcBus.Client
                 })
                 .ToDictionary(x => x.Key, x => x.Value);
         }
-    }
-
-    public interface INotification
-    {
     }
 }

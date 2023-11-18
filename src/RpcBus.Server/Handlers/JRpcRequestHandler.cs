@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using RpcBus.Exceptions;
 using RpcBus.Models;
-using SlimMessageBus;
+
+using Wolverine;
 
 namespace RpcBus.Server.Handlers;
 
@@ -79,7 +80,7 @@ public class JRpcRequestHandler
             }
 
             // send request
-            var response = await bus.Send((dynamic)request);
+            var response = await bus.InvokeAsync<object>(request);
 
             // check if request is a Result Type
             if (response is IResult result)

@@ -2,11 +2,11 @@
 using RpcBus.Test.Api.Data;
 using RpcBus.Test.Contract;
 using RpcBus.Test.Contract.Models;
-using SlimMessageBus;
+
 
 namespace RpcBus.Test.Api.Handlers;
 
-public class QueryTodosRequestHandler : IRequestHandler<QueryTodosRequest, TodoModel[]>
+public class QueryTodosRequestHandler
 {
     private readonly TodoContext context;
 
@@ -15,7 +15,7 @@ public class QueryTodosRequestHandler : IRequestHandler<QueryTodosRequest, TodoM
         this.context = context;
     }
 
-    public async Task<TodoModel[]> OnHandle(QueryTodosRequest request)
+    public async Task<TodoModel[]> Handle(QueryTodosRequest request)
     {
         return await context
             .Todos

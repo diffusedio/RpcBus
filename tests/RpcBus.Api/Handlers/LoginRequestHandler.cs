@@ -5,11 +5,10 @@ using Microsoft.IdentityModel.Tokens;
 using RpcBus.Exceptions;
 using RpcBus.Test.Api.Models;
 using RpcBus.Test.Contract;
-using SlimMessageBus;
 
 namespace RpcBus.Test.Api.Handlers;
 
-public class LoginRequestHandler : IRequestHandler<LoginRequest, string>
+public class LoginRequestHandler 
 {
     private const string secret = "super secret sentence";
 
@@ -19,9 +18,9 @@ public class LoginRequestHandler : IRequestHandler<LoginRequest, string>
         new User("admin", "root", "reader", "writer"),
     };
 
-    public static SymmetricSecurityKey GetTokenSigningKey() => new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super secret sentence"));
+    public static SymmetricSecurityKey GetTokenSigningKey() => new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super secret sentence super secret sentence"));
 
-    public Task<string> OnHandle(LoginRequest request)
+    public Task<string> Handle(LoginRequest request)
     {
         var user = users.FirstOrDefault(x => x.Name == request.Username && x.Password == request.Password);
 

@@ -1,4 +1,4 @@
-﻿using SlimMessageBus;
+﻿using RpcBus.Client;
 
 namespace RpcBus.Test.Contract
 {

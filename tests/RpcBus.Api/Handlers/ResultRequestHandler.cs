@@ -1,11 +1,11 @@
 ﻿using RpcBus.Test.Contract;
-using SlimMessageBus;
+
 
 namespace RpcBus.Test.Api.Handlers;
 
-public class ResultRequestHandler : IRequestHandler<ResultRequest, Result<Dictionary<string, string>>>
+public class ResultRequestHandler 
 {
-    public async Task<Result<Dictionary<string, string>>> OnHandle(ResultRequest request)
+    public async Task<Result<Dictionary<string, string>>> Handle(ResultRequest request)
     {
         await Task.Delay(1);
 

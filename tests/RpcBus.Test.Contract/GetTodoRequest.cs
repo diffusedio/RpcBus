@@ -1,5 +1,5 @@
-﻿using RpcBus.Test.Contract.Models;
-using SlimMessageBus;
+﻿using RpcBus.Client;
+using RpcBus.Test.Contract.Models;
 
 namespace RpcBus.Test.Contract
 {

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using RpcBus.Exceptions;
 using RpcBus.Models;
-using SlimMessageBus;
+using Wolverine;
 
 namespace RpcBus.Server.Handlers;
 
@@ -58,7 +58,7 @@ public class JRpcNotificationHandler
             }
 
             // publish notification
-            await bus.Publish(notification);
+            await bus.PublishAsync(notification);
             context.Response.StatusCode = (int)HttpStatusCode.NoContent;
         }
         // handle exceptions

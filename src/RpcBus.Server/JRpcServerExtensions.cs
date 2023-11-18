@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using RpcBus.Server.Handlers;
-using SlimMessageBus.Host;
-using SlimMessageBus.Host.Memory;
 using static RpcBus.Utils.JRpcUtils;
 
 namespace RpcBus.Server

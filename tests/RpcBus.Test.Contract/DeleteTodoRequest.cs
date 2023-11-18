@@ -1,10 +1,8 @@
-﻿using SlimMessageBus;
-
-namespace RpcBus.Test.Contract
+﻿namespace RpcBus.Test.Contract
 {
     [JRpcMethod("delete/todo")]
     [JRpcAuthorize(Role = "writer")]
-    public class DeleteTodoRequest : IRequest
+    public class DeleteTodoRequest 
     {
         public int Id { get; set; }
 
